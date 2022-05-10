@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1631113590 source:e:\embedded_systems\dr._yifeng_zhu\examples\fibonacci recursive in c\fibonacci\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1631175627 source:e:\embedded_systems\dr._yifeng_zhu\examples\fibonacci_recursive_in_c\fibonacci\main.c
+	<stdio.h>
+	<stdlib.h>
+

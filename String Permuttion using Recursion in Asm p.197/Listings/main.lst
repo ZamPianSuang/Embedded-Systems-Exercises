@@ -1,0 +1,350 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             myData, DATA, READWRITE
+    2 00000000                 ALIGN
+    3 00000000 41 42 43 
+              00       str     DCB              "ABC",0
+    4 00000004 00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00    result  SPACE            200         ; reserve 200 bytes
+                                                            
+    5 000000CC 20 00   sep     DCB              " ",0       ; seperator
+    6 000000CE         
+    7 000000CE                 AREA             string_permutation, CODE, READO
+NLY
+    8 00000000                 EXPORT           __main
+    9 00000000                 ENTRY
+   10 00000000         __main  PROC
+   11 00000000         
+   12 00000000 481F            LDR              r0, =str
+   13 00000002 F04F 0100       MOV              r1, #0      ; start
+   14 00000006 F04F 0202       MOV              r2, #2      ; end
+   15 0000000A F7FF FFFE       BL               permute
+   16 0000000E         
+   17 0000000E E7FE    stop    B                stop
+   18 00000010                 ENDP
+   19 00000010         
+   20 00000010         permute PROC
+   21 00000010 B5F0            PUSH             {r4-r7, LR}
+   22 00000012         
+   23 00000012 4604            MOV              r4, R0      ; str
+   24 00000014 460D            MOV              r5, R1      ; start
+   25 00000016 4616            MOV              r6, R2      ; end
+   26 00000018         
+   27 00000018 42B5            CMP              R5, R6
+   28 0000001A DB08            BLT              else        ; if(start < end)
+   29 0000001C         
+   30 0000001C 4819    then    LDR              r0, =result
+   31 0000001E 491A            LDR              r1, =sep
+   32 00000020 F7FF FFFE       BL               strcat      ; strcat(result, se
+                                                            p)
+   33 00000024         
+   34 00000024 4817            LDR              r0, =result
+   35 00000026 4621            MOV              r1, R4
+   36 00000028 F7FF FFFE       BL               strcat      ; strcat(result, st
+                                                            r)
+   37 0000002C         
+   38 0000002C E016            B                exit
+   39 0000002E         
+   40 0000002E 462F    else    MOV              r7, r5      ; variable i = star
+                                                            t
+   41 00000030         
+   42 00000030 EB04 0005 
+                       loop    ADD              r0, R4, R5  ; r0 = str + start
+   43 00000034 EB04 0107       ADD              r1, R4, R7  ; r1 = str + i
+   44 00000038 F7FF FFFE       BL               swap
+   45 0000003C         
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   46 0000003C 4620            MOV              r0, R4      ; str
+   47 0000003E F105 0101       ADD              r1, R5, #1  ; start + 1
+   48 00000042 4632            MOV              r2, r6      ; end
+   49 00000044 F7FF FFFE       BL               permute     ; recursive call
+   50 00000048         
+   51 00000048 EB04 0005       ADD              r0, r4, r5  ; str + start
+   52 0000004C EB04 0107       ADD              r1, r4, r7  ; str + i
+   53 00000050 F7FF FFFE       BL               swap
+   54 00000054         
+   55 00000054 F107 0701       ADD              r7, r7, #1  ; i++
+   56 00000058 42B7    check   CMP              r7, r6      ; compare i & end
+   57 0000005A DDE9            BLE              loop
+   58 0000005C         
+   59 0000005C BDF0    exit    POP              {r4-r7, PC}
+   60 0000005E                 ENDP
+   61 0000005E         
+   62 0000005E         ; Concatenate two strings
+   63 0000005E         strcat  PROC
+   64 0000005E 7802    loop2   LDRB             r2, [r0]
+   65 00000060 B112            CBZ              r2, copy
+   66 00000062 F100 0001       ADD              r0, r0, #1
+   67 00000066 E7FA            B                loop2
+   68 00000068         
+   69 00000068 F811 3B01 
+                       copy    LDRB             r3, [r1], #1
+   70 0000006C F800 3B01       STRB             r3, [r0], #1
+   71 00000070 2B00            CMP              r3, #0
+   72 00000072 D1F9            BNE              copy
+   73 00000074 4770            BX               LR
+   74 00000076                 ENDP
+   75 00000076         
+   76 00000076         ; Swap routine 
+   77 00000076         swap    PROC
+   78 00000076 7802            LDRB             r2, [r0]
+   79 00000078 780B            LDRB             r3, [r1]
+   80 0000007A 7003            STRB             r3, [r0]
+   81 0000007C 700A            STRB             r2, [r1]
+   82 0000007E 4770            BX               LR
+   83 00000080                 ENDP
+   84 00000080         
+   85 00000080                 ALIGN
+   86 00000080                 END
+              00000000 
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\U
+sers\Suangpi\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\Us
+ers\Suangpi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Dev
+ice\ST\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VER
+SION SETA 535" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+myData 00000000
+
+Symbol: myData
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: myData unused
+result 00000004
+
+Symbol: result
+   Definitions
+      At line 4 in file main.s
+   Uses
+      At line 30 in file main.s
+      At line 34 in file main.s
+
+sep 000000CC
+
+Symbol: sep
+   Definitions
+      At line 5 in file main.s
+   Uses
+      At line 31 in file main.s
+Comment: sep used once
+str 00000000
+
+Symbol: str
+   Definitions
+      At line 3 in file main.s
+   Uses
+      At line 12 in file main.s
+Comment: str used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 10 in file main.s
+   Uses
+      At line 8 in file main.s
+Comment: __main used once
+check 00000058
+
+Symbol: check
+   Definitions
+      At line 56 in file main.s
+   Uses
+      None
+Comment: check unused
+copy 00000068
+
+Symbol: copy
+   Definitions
+      At line 69 in file main.s
+   Uses
+      At line 65 in file main.s
+      At line 72 in file main.s
+
+else 0000002E
+
+Symbol: else
+   Definitions
+      At line 40 in file main.s
+   Uses
+      At line 28 in file main.s
+Comment: else used once
+exit 0000005C
+
+Symbol: exit
+   Definitions
+      At line 59 in file main.s
+   Uses
+      At line 38 in file main.s
+Comment: exit used once
+loop 00000030
+
+Symbol: loop
+   Definitions
+      At line 42 in file main.s
+   Uses
+      At line 57 in file main.s
+Comment: loop used once
+loop2 0000005E
+
+Symbol: loop2
+   Definitions
+      At line 64 in file main.s
+   Uses
+      At line 67 in file main.s
+Comment: loop2 used once
+permute 00000010
+
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+Symbol: permute
+   Definitions
+      At line 20 in file main.s
+   Uses
+      At line 15 in file main.s
+      At line 49 in file main.s
+
+stop 0000000E
+
+Symbol: stop
+   Definitions
+      At line 17 in file main.s
+   Uses
+      At line 17 in file main.s
+Comment: stop used once
+strcat 0000005E
+
+Symbol: strcat
+   Definitions
+      At line 63 in file main.s
+   Uses
+      At line 32 in file main.s
+      At line 36 in file main.s
+
+string_permutation 00000000
+
+Symbol: string_permutation
+   Definitions
+      At line 7 in file main.s
+   Uses
+      None
+Comment: string_permutation unused
+swap 00000076
+
+Symbol: swap
+   Definitions
+      At line 77 in file main.s
+   Uses
+      At line 44 in file main.s
+      At line 53 in file main.s
+
+then 0000001C
+
+Symbol: then
+   Definitions
+      At line 30 in file main.s
+   Uses
+      None
+Comment: then unused
+13 symbols
+354 symbols in table

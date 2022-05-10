@@ -1,0 +1,251 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Find all unique numbers by removing duplicate numbers
+    2 00000000         
+    3 00000000                 AREA             myData, DATA
+    4 00000000                 ALIGN
+    5 00000000 00000007 
+              00000001 
+              00000007 
+              00000002 
+              00000001 array   DCD              7,1,7,2,1
+    6 00000014 00000003 
+              00000001 
+              00000002 
+              00000004 
+              00000005         DCD              3,1,2,4,5
+    7 00000028 00000002 
+              00000003 
+              00000002 
+              00000006 
+              00000007         DCD              2,3,2,6,7
+    8 0000003C 00000002 
+              00000003 
+              00000002 
+              00000006 
+              00000007         DCD              2,3,2,6,7
+    9 00000050         
+   10 00000050 00000014 
+                       size    DCD              20
+   11 00000054         
+   12 00000054                 AREA             remove_duplicates, CODE
+   13 00000000                 EXPORT           __main
+   14 00000000                 ENTRY
+   15 00000000         __main  PROC
+   16 00000000         
+   17 00000000 4818            LDR              R0, =array
+   18 00000002 4919            LDR              R1, =size
+   19 00000004 6809            LDR              R1, [R1]
+   20 00000006 F7FF FFFE       BL               remove_dup
+   21 0000000A         
+   22 0000000A E7FE    stop    B                stop
+   23 0000000C                 ENDP
+   24 0000000C         
+   25 0000000C         ; r0 = array pointer, r1 = size  
+   26 0000000C         ; r5 = i, r6 = j, r7 = k
+   27 0000000C         remove_dup
+                               PROC
+   28 0000000C E92D 41F0       PUSH             {r4-r8, LR}
+   29 00000010 F04F 0500       MOV              R5, #0      ; i = 0
+   30 00000014         
+   31 00000014 428D    loop_i  CMP              R5, R1      ; i < size ?
+   32 00000016 DA22            BGE              exit        ; if (i >= size)
+   33 00000018 F105 0601       ADD              R6, R5, #1  ; <j = i+1>
+   34 0000001C         
+   35 0000001C 428E    loop_j  CMP              R6, R1      ; j < size ?
+   36 0000001E DA1B            BGE              ex_j        ; if (j >= size)   
+                                                              
+   37 00000020 F850 8025       LDR              R8, [R0, R5, LSL #2] ; array[i]
+                                                            
+   38 00000024 F850 4026       LDR              R4, [R0, R6, LSL #2] ; array[j]
+                                                            
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   39 00000028 4544            CMP              R4, R8      ; array[i] == array
+                                                            [j] ?
+   40 0000002A D112            BNE              ifnot       ; if (array[i] != a
+                                                            rray[j])
+   41 0000002C         ; if array[i] == array[j], shift left by one position
+   42 0000002C 4637            MOV              R7, R6      ; k = j
+   43 0000002E F1A1 0201       SUB              R2, R1, #1  ; <r2 = size-1>
+   44 00000032         
+   45 00000032 4297    shift   CMP              R7, R2      ; k < size-1 ?
+   46 00000034 DA08            BGE              ex_k        ; if (k >= size-1)
+   47 00000036 F107 0301       ADD              R3, R7, #1  ; r3 = k+1
+   48 0000003A F850 4023       LDR              R4, [R0, R3, LSL #2] 
+                                                            ; array[k+1]
+   49 0000003E F840 4027       STR              R4, [R0, R7, LSL #2] ; array[k]
+                                                             = array[k+1]
+   50 00000042 F107 0701       ADD              R7, R7, #1  ; k = k+1
+   51 00000046 E7F4            B                shift
+   52 00000048         
+   53 00000048 F1A1 0101 
+                       ex_k    SUB              R1, R1, #1  ; size = size-1
+   54 0000004C F106 0601       ADD              R6, R6, #1  ; j = j+1
+   55 00000050 E7E0            B                loop_i
+   56 00000052         
+   57 00000052 F106 0601 
+                       ifnot   ADD              R6, R6, #1  ; j = j+1
+   58 00000056 E7E1            B                loop_j
+   59 00000058         
+   60 00000058 F105 0501 
+                       ex_j    ADD              R5, R5, #1  ; i = i+1
+   61 0000005C E7DA            B                loop_i
+   62 0000005E         
+   63 0000005E 4608    exit    MOV              R0, R1      ; return size
+   64 00000060 E8BD 81F0       POP              {r4-r8, PC}
+   65 00000064         
+   66 00000064                 ENDP
+   67 00000064                 ALIGN
+   68 00000064                 END
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\U
+sers\Suangpi\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\Us
+ers\Suangpi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Dev
+ice\ST\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VER
+SION SETA 535" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+array 00000000
+
+Symbol: array
+   Definitions
+      At line 5 in file main.s
+   Uses
+      At line 17 in file main.s
+Comment: array used once
+myData 00000000
+
+Symbol: myData
+   Definitions
+      At line 3 in file main.s
+   Uses
+      None
+Comment: myData unused
+size 00000050
+
+Symbol: size
+   Definitions
+      At line 10 in file main.s
+   Uses
+      At line 18 in file main.s
+Comment: size used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 15 in file main.s
+   Uses
+      At line 13 in file main.s
+Comment: __main used once
+ex_j 00000058
+
+Symbol: ex_j
+   Definitions
+      At line 60 in file main.s
+   Uses
+      At line 36 in file main.s
+Comment: ex_j used once
+ex_k 00000048
+
+Symbol: ex_k
+   Definitions
+      At line 53 in file main.s
+   Uses
+      At line 46 in file main.s
+Comment: ex_k used once
+exit 0000005E
+
+Symbol: exit
+   Definitions
+      At line 63 in file main.s
+   Uses
+      At line 32 in file main.s
+Comment: exit used once
+ifnot 00000052
+
+Symbol: ifnot
+   Definitions
+      At line 57 in file main.s
+   Uses
+      At line 40 in file main.s
+Comment: ifnot used once
+loop_i 00000014
+
+Symbol: loop_i
+   Definitions
+      At line 31 in file main.s
+   Uses
+      At line 55 in file main.s
+      At line 61 in file main.s
+
+loop_j 0000001C
+
+Symbol: loop_j
+   Definitions
+      At line 35 in file main.s
+   Uses
+      At line 58 in file main.s
+Comment: loop_j used once
+remove_dup 0000000C
+
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+Symbol: remove_dup
+   Definitions
+      At line 27 in file main.s
+   Uses
+      At line 20 in file main.s
+Comment: remove_dup used once
+remove_duplicates 00000000
+
+Symbol: remove_duplicates
+   Definitions
+      At line 12 in file main.s
+   Uses
+      None
+Comment: remove_duplicates unused
+shift 00000032
+
+Symbol: shift
+   Definitions
+      At line 45 in file main.s
+   Uses
+      At line 51 in file main.s
+Comment: shift used once
+stop 0000000A
+
+Symbol: stop
+   Definitions
+      At line 22 in file main.s
+   Uses
+      At line 22 in file main.s
+Comment: stop used once
+11 symbols
+351 symbols in table

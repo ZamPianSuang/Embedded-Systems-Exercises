@@ -1,0 +1,145 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Implementing Linear Search
+    2 00000000         ; Finding the Maximum value of an array
+    3 00000000                 AREA             myData, DATA, READWRITE
+    4 00000000                 ALIGN
+    5 00000000 FFFFFFFF 
+              00000005 
+              00000003 
+              00000008 
+              0000000A 
+              00000017 
+              00000006 
+              00000005 
+              0000001D 
+              0000001E array   DCD              -1,5,3,8,10,23,6,5,29,30
+    6 00000028 0000000A 
+                       size    DCD              10
+    7 0000002C         
+    8 0000002C                 AREA             findMax, CODE, READONLY
+    9 00000000                 EXPORT           __main
+   10 00000000                 ENTRY
+   11 00000000                 ALIGN
+   12 00000000         __main  PROC
+   13 00000000         
+   14 00000000         ; Identify the array size
+   15 00000000 4B0A            LDR              R3, =size
+   16 00000002 681B            LDR              R3, [R3]
+   17 00000004 F1A3 0301       SUB              R3, R3, #1  ; array index start
+                                                            s from 0
+   18 00000008         
+   19 00000008         ; Initialize max Value and Location
+   20 00000008 4C09            LDR              R4, =array
+   21 0000000A 6820            LDR              R0, [R4]    ; R0 = default max
+   22 0000000C F04F 0100       MOV              R1, #0      ; R1 = max Location
+                                                            
+   23 00000010         
+   24 00000010 F04F 0200       MOV              R2, #0      ; loop index i
+   25 00000014         
+   26 00000014 429A    loop    CMP              R2, R3      ; compare i with si
+                                                            ze
+   27 00000016 DC08            BGT              stop        ; if (i >= size) st
+                                                            op
+   28 00000018 F854 5022       LDR              R5, [R4, R2, LSL #2] ; array[i]
+                                                             = R4 + R2 * 4
+   29 0000001C 4285            CMP              R5, R0      ; compre with max
+   30 0000001E BFC4 4628       MOVGT            R0, R5      ; update max
+   31 00000022 4611            MOVGT            R1, R2      ; update location
+   32 00000024 F102 0201       ADD              R2, R2, #1  ; update index i
+   33 00000028 E7F4            B                loop
+   34 0000002A         
+   35 0000002A E7FE    stop    B                stop
+   36 0000002C                 ENDP
+   37 0000002C                 END
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\U
+sers\Suangpi\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\Us
+ers\Suangpi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Dev
+ice\ST\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VER
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+SION SETA 535" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+array 00000000
+
+Symbol: array
+   Definitions
+      At line 5 in file main.s
+   Uses
+      At line 20 in file main.s
+Comment: array used once
+myData 00000000
+
+Symbol: myData
+   Definitions
+      At line 3 in file main.s
+   Uses
+      None
+Comment: myData unused
+size 00000028
+
+Symbol: size
+   Definitions
+      At line 6 in file main.s
+   Uses
+      At line 15 in file main.s
+Comment: size used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 12 in file main.s
+   Uses
+      At line 9 in file main.s
+Comment: __main used once
+findMax 00000000
+
+Symbol: findMax
+   Definitions
+      At line 8 in file main.s
+   Uses
+      None
+Comment: findMax unused
+loop 00000014
+
+Symbol: loop
+   Definitions
+      At line 26 in file main.s
+   Uses
+      At line 33 in file main.s
+Comment: loop used once
+stop 0000002A
+
+Symbol: stop
+   Definitions
+      At line 35 in file main.s
+   Uses
+      At line 27 in file main.s
+      At line 35 in file main.s
+
+4 symbols
+344 symbols in table

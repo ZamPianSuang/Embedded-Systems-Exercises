@@ -1,0 +1,168 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             myData, DATA, READWRITE
+    2 00000000                 ALIGN
+    3 00000000 21 73 6B 
+              6E 61 68 
+              74 20 2C 
+              65 6D 20 
+              64 65 73 
+              72 65 76 
+              65 72 20 
+              74 73 75 
+              6A 20 75 
+              6F 79 20 
+              2C 68 4F 
+              00       str     DCB              "!sknaht ,em desrever tsuj uoy 
+,hO",0 
+                                                            ; Oh, you just reve
+                                                            rsed me, thanks!
+    4 00000022         
+    5 00000022                 AREA             reverse_string, CODE, READONLY
+    6 00000000                 EXPORT           __main
+    7 00000000                 ENTRY
+    8 00000000         __main  PROC
+    9 00000000         
+   10 00000000 4811            LDR              R0, =str
+   11 00000002 F04F 0100       MOV              R1, #0      ; start
+   12 00000006 F04F 0220       MOV              R2, #32     ; end = n-1
+   13 0000000A F7FF FFFE       BL               reverse
+   14 0000000E E7FE    stop    B                stop
+   15 00000010                 ENDP
+   16 00000010         
+   17 00000010         swap    PROC                         ; swap routine
+   18 00000010 7802            LDRB             r2, [r0]    ; temp = *x
+   19 00000012 780B            LDRB             r3, [r1]
+   20 00000014 7003            STRB             r3, [r0]    ; *x = y
+   21 00000016 700A            STRB             r2, [r1]    ; *y = temp
+   22 00000018 4770            BX               LR
+   23 0000001A                 ENDP
+   24 0000001A         
+   25 0000001A         reverse PROC
+   26 0000001A B570            PUSH             {r4 - r6, LR}
+   27 0000001C 4606            MOV              R6, R0      ; string pointer
+   28 0000001E 460C            MOV              R4, R1      ; start position
+   29 00000020 4615            MOV              R5, R2      ; end position
+   30 00000022         
+   31 00000022 42AC            CMP              R4, R5      ; check start <= en
+                                                            d
+   32 00000024 BF08 BD70 
+                       exit    POPEQ            {r4 - r6, PC} ; POP if start ==
+                                                             end
+   33 00000028         
+   34 00000028 EB06 0004       ADD              R0, R6, R4  ; [str + start]
+   35 0000002C EB06 0105       ADD              R1, R6, R5  ; [str + end]
+   36 00000030         
+   37 00000030 F7FF FFFE       BL               swap
+   38 00000034         
+   39 00000034 F104 0401       ADD              R4, R4, #1  ; start++
+   40 00000038 F1A5 0501       SUB              R5, R5, #1  ; end--
+   41 0000003C         
+   42 0000003C 4630            MOV              R0, R6
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   43 0000003E 4621            MOV              R1, R4
+   44 00000040 462A            MOV              R2, R5
+   45 00000042         
+   46 00000042 F7FF FFFE       BL               reverse
+   47 00000046 BD70            POP              {r4 - r6, PC}
+   48 00000048         
+   49 00000048                 ENDP
+   50 00000048                 ALIGN
+   51 00000048                 END
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\U
+sers\Suangpi\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\Us
+ers\Suangpi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Dev
+ice\ST\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VER
+SION SETA 535" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+myData 00000000
+
+Symbol: myData
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: myData unused
+str 00000000
+
+Symbol: str
+   Definitions
+      At line 3 in file main.s
+   Uses
+      At line 10 in file main.s
+Comment: str used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 8 in file main.s
+   Uses
+      At line 6 in file main.s
+Comment: __main used once
+exit 00000024
+
+Symbol: exit
+   Definitions
+      At line 32 in file main.s
+   Uses
+      None
+Comment: exit unused
+reverse 0000001A
+
+Symbol: reverse
+   Definitions
+      At line 25 in file main.s
+   Uses
+      At line 13 in file main.s
+      At line 46 in file main.s
+
+reverse_string 00000000
+
+Symbol: reverse_string
+   Definitions
+      At line 5 in file main.s
+   Uses
+      None
+Comment: reverse_string unused
+stop 0000000E
+
+Symbol: stop
+   Definitions
+      At line 14 in file main.s
+   Uses
+      At line 14 in file main.s
+Comment: stop used once
+swap 00000010
+
+Symbol: swap
+   Definitions
+      At line 17 in file main.s
+   Uses
+      At line 37 in file main.s
+Comment: swap used once
+6 symbols
+345 symbols in table

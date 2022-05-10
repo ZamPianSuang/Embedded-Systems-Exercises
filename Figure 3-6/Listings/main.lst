@@ -1,0 +1,129 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             myCode, CODE, READONLY
+    2 00000000                 EXPORT           __main
+    3 00000000                 ALIGN
+    4 00000000                 ENTRY
+    5 00000000         __main  PROC
+    6 00000000         
+    7 00000000 4904    strCpy  LDR              R1, =srcStr
+    8 00000002 4805            LDR              R0, =dstStr
+    9 00000004 F811 2B01 
+                       loop    LDRB             r2, [r1], #1
+   10 00000008 F800 2B01       STRB             r2, [r0], #1
+   11 0000000C 2A00            CMP              r2, #0
+   12 0000000E D1F9            BNE              loop
+   13 00000010         
+   14 00000010 E7FE    stop    B                stop
+   15 00000012         
+   16 00000012                 ENDP
+   17 00000012 00 00           ALIGN
+   18 00000014 00000000 
+              00000000         AREA             myData, DATA, READWRITE
+   19 00000000                 ALIGN
+   20 00000000 54 68 65 
+              20 53 6F 
+              75 72 63 
+              65 20 53 
+              74 72 69 
+              6E 67 00 srcStr  DCB              "The Source String",0
+   21 00000012 54 68 65 
+              20 44 65 
+              73 74 69 
+              6E 61 74 
+              69 6F 6E 
+              20 73 74 
+              72 69 6E 
+              67 00    dstStr  DCB              "The Destination string",0
+   22 00000029         
+   23 00000029                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\U
+sers\Suangpi\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\Us
+ers\Suangpi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Dev
+ice\ST\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VER
+SION SETA 535" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 5 in file main.s
+   Uses
+      At line 2 in file main.s
+Comment: __main used once
+loop 00000004
+
+Symbol: loop
+   Definitions
+      At line 9 in file main.s
+   Uses
+      At line 12 in file main.s
+Comment: loop used once
+myCode 00000000
+
+Symbol: myCode
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: myCode unused
+stop 00000010
+
+Symbol: stop
+   Definitions
+      At line 14 in file main.s
+   Uses
+      At line 14 in file main.s
+Comment: stop used once
+strCpy 00000000
+
+Symbol: strCpy
+   Definitions
+      At line 7 in file main.s
+   Uses
+      None
+Comment: strCpy unused
+5 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+dstStr 00000012
+
+Symbol: dstStr
+   Definitions
+      At line 21 in file main.s
+   Uses
+      At line 8 in file main.s
+Comment: dstStr used once
+myData 00000000
+
+Symbol: myData
+   Definitions
+      At line 18 in file main.s
+   Uses
+      None
+Comment: myData unused
+srcStr 00000000
+
+Symbol: srcStr
+   Definitions
+      At line 20 in file main.s
+   Uses
+      At line 7 in file main.s
+Comment: srcStr used once
+3 symbols
+345 symbols in table

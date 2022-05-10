@@ -1,0 +1,96 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; An n-digit number is Armstrong if the sum of the nth p
+                       owers of
+    2 00000000         ; its digits equals the number itself. Eg. 371, 1634, 54
+                       748, 1741725
+    3 00000000         
+    4 00000000                 AREA             armstrong, CODE, READONLY
+    5 00000000                 EXPORT           __main
+    6 00000000                 ENTRY
+    7 00000000                 ALIGN
+    8 00000000         __main  PROC
+    9 00000000         
+   10 00000000 F240 1073       LDR              R0, =371    ; number to be chec
+                                                            ked
+   11 00000004 F04F 0400       MOV              R4, #0      ; sum = 0
+   12 00000008 4601            MOV              R1, R0      ; temp for number
+   13 0000000A F04F 030A       MOV              R3, #10     ; loop i
+   14 0000000E         
+   15 0000000E B159    loop    CBZ              R1, check
+   16 00000010 FB91 F6F3       SDIV             R6, R1, R3
+   17 00000014 FB06 1213       MLS              R2, R6, R3, R1 
+                                                            ; R6 = R6*R3 - R1
+   18 00000018 FB02 F302       MUL              R3, R2, R2  ; remainder^2
+   19 0000001C FB03 4402       MLA              R4, R3, R2, R4 ; sum = sum + re
+                                                            mainder^3
+   20 00000020 230A            MOVS             R3, #10
+   21 00000022 FB91 F1F3       SDIV             R1, R1, R3
+   22 00000026 E7F2            B                loop
+   23 00000028         
+   24 00000028 42A0    check   CMP              R0, R4
+   25 0000002A BF0C 2001       MOVEQ            R0, #1      ; Armstrong
+   26 0000002E 2000            MOVNE            R0, #0      ; not armstrong
+   27 00000030         
+   28 00000030 E7FE    stop    B                stop
+   29 00000032                 ENDP
+   30 00000032                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\U
+sers\Suangpi\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\Us
+ers\Suangpi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Dev
+ice\ST\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VER
+SION SETA 535" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 8 in file main.s
+   Uses
+      At line 5 in file main.s
+Comment: __main used once
+armstrong 00000000
+
+Symbol: armstrong
+   Definitions
+      At line 4 in file main.s
+   Uses
+      None
+Comment: armstrong unused
+check 00000028
+
+Symbol: check
+   Definitions
+      At line 24 in file main.s
+   Uses
+      At line 15 in file main.s
+Comment: check used once
+loop 0000000E
+
+Symbol: loop
+   Definitions
+      At line 15 in file main.s
+   Uses
+      At line 22 in file main.s
+Comment: loop used once
+stop 00000030
+
+Symbol: stop
+   Definitions
+      At line 28 in file main.s
+   Uses
+      At line 28 in file main.s
+Comment: stop used once
+5 symbols
+340 symbols in table

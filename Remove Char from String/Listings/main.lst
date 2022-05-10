@@ -1,0 +1,128 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             myData, DATA
+    2 00000000 4C 65 73 
+              73 20 69 
+              73 20 6D 
+              6F 72 65 
+              00       str     DCB              "Less is more",0
+    3 0000000D         
+    4 0000000D                 AREA             removeChar, CODE
+    5 00000000                 EXPORT           __main
+    6 00000000                 ENTRY
+    7 00000000         __main  PROC
+    8 00000000         
+    9 00000000 4807            LDR              R0, =str
+   10 00000002 2165            MOVS             R1, #'e'
+   11 00000004 F7FF FFFE       BL               remove
+   12 00000008         
+   13 00000008 E7FE    stop    B                stop
+   14 0000000A                 ENDP
+   15 0000000A         
+   16 0000000A         remove  PROC
+   17 0000000A 4602            MOV              R2, R0
+   18 0000000C F812 3B01 
+                       loop    LDRB             R3, [R2], #1
+   19 00000010 B123            CBZ              R3, exit    ; exit on NULL
+   20 00000012 4299            CMP              R1, R3
+   21 00000014 D0FA            BEQ              loop        ; if same
+   22 00000016 F800 3B01       STRB             R3, [R0], #1 ; store
+   23 0000001A E7F7            B                loop
+   24 0000001C         
+   25 0000001C 7003    exit    STRB             R3, [R0]
+   26 0000001E 4770            BX               LR
+   27 00000020                 ENDP
+   28 00000020                 ALIGN
+   29 00000020                 END
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\U
+sers\Suangpi\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\Us
+ers\Suangpi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Dev
+ice\ST\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VER
+SION SETA 535" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+myData 00000000
+
+Symbol: myData
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: myData unused
+str 00000000
+
+Symbol: str
+   Definitions
+      At line 2 in file main.s
+   Uses
+      At line 9 in file main.s
+Comment: str used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 7 in file main.s
+   Uses
+      At line 5 in file main.s
+Comment: __main used once
+exit 0000001C
+
+Symbol: exit
+   Definitions
+      At line 25 in file main.s
+   Uses
+      At line 19 in file main.s
+Comment: exit used once
+loop 0000000C
+
+Symbol: loop
+   Definitions
+      At line 18 in file main.s
+   Uses
+      At line 21 in file main.s
+      At line 23 in file main.s
+
+remove 0000000A
+
+Symbol: remove
+   Definitions
+      At line 16 in file main.s
+   Uses
+      At line 11 in file main.s
+Comment: remove used once
+removeChar 00000000
+
+Symbol: removeChar
+   Definitions
+      At line 4 in file main.s
+   Uses
+      None
+Comment: removeChar unused
+stop 00000008
+
+Symbol: stop
+   Definitions
+      At line 13 in file main.s
+   Uses
+      At line 13 in file main.s
+Comment: stop used once
+6 symbols
+345 symbols in table

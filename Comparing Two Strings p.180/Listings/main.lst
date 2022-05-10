@@ -1,0 +1,147 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             myData, DATA
+    2 00000000                 ALIGN
+    3 00000000 63 61 74 
+              00       str1    DCB              "cat",0
+    4 00000004 64 6F 67 
+              00       str2    DCB              "dog",0
+    5 00000008 00 00   result  DCW              0
+    6 0000000A         
+    7 0000000A                 AREA             compare, CODE
+    8 00000000                 EXPORT           __main
+    9 00000000                 ENTRY
+   10 00000000         __main  PROC
+   11 00000000         
+   12 00000000 4808            LDR              R0, =str1
+   13 00000002 4909            LDR              R1, =str2
+   14 00000004 F7FF FFFE       BL               strcmp
+   15 00000008 4908            LDR              R1, =result
+   16 0000000A 6008            STR              R0, [R1]
+   17 0000000C E7FE    stop    B                stop
+   18 0000000E 00 00           ALIGN
+   19 00000010                 ENDP
+   20 00000010         
+   21 00000010         strcmp  PROC
+   22 00000010 F810 2B01 
+                       loop    LDRB             R2, [R0], #1
+   23 00000014 F811 3B01       LDRB             R3, [R1], #1
+   24 00000018 B10A            CBZ              R2, exit
+   25 0000001A 429A            CMP              R2, R3      ;if *s == *t
+   26 0000001C D0F8            BEQ              loop
+   27 0000001E         
+   28 0000001E EBA2 0003 
+                       exit    SUB              R0, R2, R3  ;r0 = *s - *t
+   29 00000022 4770            BX               LR
+   30 00000024                 ENDP
+   31 00000024         
+   32 00000024                 END
+              00000000 
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\U
+sers\Suangpi\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\Us
+ers\Suangpi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Dev
+ice\ST\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VER
+SION SETA 535" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+myData 00000000
+
+Symbol: myData
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: myData unused
+result 00000008
+
+Symbol: result
+   Definitions
+      At line 5 in file main.s
+   Uses
+      At line 15 in file main.s
+Comment: result used once
+str1 00000000
+
+Symbol: str1
+   Definitions
+      At line 3 in file main.s
+   Uses
+      At line 12 in file main.s
+Comment: str1 used once
+str2 00000004
+
+Symbol: str2
+   Definitions
+      At line 4 in file main.s
+   Uses
+      At line 13 in file main.s
+Comment: str2 used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 10 in file main.s
+   Uses
+      At line 8 in file main.s
+Comment: __main used once
+compare 00000000
+
+Symbol: compare
+   Definitions
+      At line 7 in file main.s
+   Uses
+      None
+Comment: compare unused
+exit 0000001E
+
+Symbol: exit
+   Definitions
+      At line 28 in file main.s
+   Uses
+      At line 24 in file main.s
+Comment: exit used once
+loop 00000010
+
+Symbol: loop
+   Definitions
+      At line 22 in file main.s
+   Uses
+      At line 26 in file main.s
+Comment: loop used once
+stop 0000000C
+
+Symbol: stop
+   Definitions
+      At line 17 in file main.s
+   Uses
+      At line 17 in file main.s
+Comment: stop used once
+strcmp 00000010
+
+Symbol: strcmp
+   Definitions
+      At line 21 in file main.s
+   Uses
+      At line 14 in file main.s
+Comment: strcmp used once
+6 symbols
+347 symbols in table

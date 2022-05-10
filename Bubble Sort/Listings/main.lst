@@ -1,0 +1,164 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Implementing Bubble Sort in ascending order
+    2 00000000         
+    3 00000000                 AREA             myData, DATA, READWRITE
+    4 00000000                 ALIGN
+    5 00000000 0000000C 
+              0000000B 
+              0000000A 
+              00000009 
+              00000008 
+              00000007 
+              00000006 
+              00000005 
+              00000004 
+              00000003 
+              00000002 
+              00000001 
+              FFFFFFFA 
+              FFFFFFF7 array   DCD              12,11,10,9,8,7,6,5,4,3,2,1,-6,-
+9
+    6 00000038 0000000E 
+                       size    DCD              14
+    7 0000003C         
+    8 0000003C                 AREA             myCode, CODE, READONLY
+    9 00000000                 EXPORT           __main
+   10 00000000                 ENTRY
+   11 00000000         __main  PROC
+   12 00000000         
+   13 00000000 480E            LDR              R0, =array
+   14 00000002         
+   15 00000002 490F            LDR              R1, =size
+   16 00000004 6809            LDR              R1, [R1]
+   17 00000006 F1A1 0101       SUB              R1, R1, #1  ; i = size-1
+   18 0000000A         
+   19 0000000A 2900    loop_i  CMP              R1, #0      ; for(i = size-1; i
+                                                             > 0; i--)
+   20 0000000C DD14            BLE              stop        ; if (i <= 0) stop
+   21 0000000E F04F 0201       MOV              R2, #1      ; j = 1
+   22 00000012 428A    loop_j  CMP              R2, R1      ; for(j = 1; j <= i
+                                                            ; j++)
+   23 00000014 BFC8 1E49       SUBGT            R1, R1, #1  ; i--
+   24 00000018 DCF7            BGT              loop_i      ; if (j > i) loop_i
+                                                            
+   25 0000001A         
+   26 0000001A F1A2 0301       SUB              R3, R2, #1  ; R3 = j-1
+   27 0000001E         
+   28 0000001E F850 5023       LDR              R5, [R0, R3, LSL #2] 
+                                                            ; R4 = array[j-1]
+   29 00000022 F850 4022       LDR              R4, [R0, R2, LSL #2] 
+                                                            ; R5 = array[j]
+   30 00000026         
+   31 00000026 42A5            CMP              R5, R4      ; if array[j-1] > a
+                                                            rray[j]
+   32 00000028 BFC4 F840 
+              4023             STRGT            R4, [R0, R3, LSL #2]
+   33 0000002E F840 5022       STRGT            R5, [R0, R2, LSL #2]
+   34 00000032         
+   35 00000032 F102 0201       ADD              R2, R2, #1  ; j++
+   36 00000036 E7EC            B                loop_j
+   37 00000038         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   38 00000038 E7FE    stop    B                stop
+   39 0000003A 00 00           ALIGN
+   40 0000003C                 ENDP
+   41 0000003C                 END
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\U
+sers\Suangpi\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\Us
+ers\Suangpi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Dev
+ice\ST\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VER
+SION SETA 535" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+array 00000000
+
+Symbol: array
+   Definitions
+      At line 5 in file main.s
+   Uses
+      At line 13 in file main.s
+Comment: array used once
+myData 00000000
+
+Symbol: myData
+   Definitions
+      At line 3 in file main.s
+   Uses
+      None
+Comment: myData unused
+size 00000038
+
+Symbol: size
+   Definitions
+      At line 6 in file main.s
+   Uses
+      At line 15 in file main.s
+Comment: size used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 11 in file main.s
+   Uses
+      At line 9 in file main.s
+Comment: __main used once
+loop_i 0000000A
+
+Symbol: loop_i
+   Definitions
+      At line 19 in file main.s
+   Uses
+      At line 24 in file main.s
+Comment: loop_i used once
+loop_j 00000012
+
+Symbol: loop_j
+   Definitions
+      At line 22 in file main.s
+   Uses
+      At line 36 in file main.s
+Comment: loop_j used once
+myCode 00000000
+
+Symbol: myCode
+   Definitions
+      At line 8 in file main.s
+   Uses
+      None
+Comment: myCode unused
+stop 00000038
+
+Symbol: stop
+   Definitions
+      At line 38 in file main.s
+   Uses
+      At line 20 in file main.s
+      At line 38 in file main.s
+
+5 symbols
+345 symbols in table

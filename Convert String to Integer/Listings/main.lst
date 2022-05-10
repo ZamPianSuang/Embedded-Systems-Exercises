@@ -1,0 +1,115 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             myData, DATA, READWRITE
+    2 00000000                 ALIGN            4
+    3 00000000 31 32 33 
+              34 35 36 
+              37 00    str     DCB              "1234567",0 ; 0x0012D687
+    4 00000008         
+    5 00000008                 AREA             myCode, CODE, READONLY
+    6 00000000                 EXPORT           __main
+    7 00000000                 ENTRY
+    8 00000000                 ALIGN
+    9 00000000         __main  PROC
+   10 00000000         
+   11 00000000 4808            LDR              R0, =str
+   12 00000002 F04F 0200       MOV              R2, #0      ; result
+   13 00000006         
+   14 00000006 F810 1B01 
+                       loop    LDRB             R1, [R0], #1
+   15 0000000A B151            CBZ              R1, stop
+   16 0000000C 2930            CMP              R1, #0x30
+   17 0000000E D308            BLO              stop        ; '0' = 0x30
+   18 00000010 2939            CMP              R1, #0x39
+   19 00000012 D806            BHI              stop        ; '9' = 0x39
+   20 00000014 F1A1 0130       SUB              R1, R1, #0x30 ; *p - 0x30
+   21 00000018         ; MOV  R4, #10
+   22 00000018         ; MLA  R2, R2, R4, R1
+   23 00000018 EB02 0382       ADD              R3, R2, R2, LSL #2 ; R3 = R2 + 
+                                                            R2 * 4 = 5r2 
+   24 0000001C EB01 0243       ADD              R2, R1, R3, LSL #1 ; R2 = R1 + 
+                                                            R3 * 2 = R1 + 10r2 
+                                                            
+   25 00000020 E7F1            B                loop
+   26 00000022         
+   27 00000022 E7FE    stop    B                stop
+   28 00000024                 ENDP
+   29 00000024                 END
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\U
+sers\Suangpi\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\Us
+ers\Suangpi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Dev
+ice\ST\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VER
+SION SETA 535" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+myData 00000000
+
+Symbol: myData
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: myData unused
+str 00000000
+
+Symbol: str
+   Definitions
+      At line 3 in file main.s
+   Uses
+      At line 11 in file main.s
+Comment: str used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 9 in file main.s
+   Uses
+      At line 6 in file main.s
+Comment: __main used once
+loop 00000006
+
+Symbol: loop
+   Definitions
+      At line 14 in file main.s
+   Uses
+      At line 25 in file main.s
+Comment: loop used once
+myCode 00000000
+
+Symbol: myCode
+   Definitions
+      At line 5 in file main.s
+   Uses
+      None
+Comment: myCode unused
+stop 00000022
+
+Symbol: stop
+   Definitions
+      At line 27 in file main.s
+   Uses
+      At line 15 in file main.s
+      At line 17 in file main.s
+      At line 19 in file main.s
+      At line 27 in file main.s
+
+4 symbols
+343 symbols in table

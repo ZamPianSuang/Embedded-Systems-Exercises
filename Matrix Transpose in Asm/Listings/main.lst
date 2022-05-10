@@ -1,0 +1,93 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             myData, DATA
+    2 00000000                 ALIGN
+    3 00000000 00000001 
+              00000002 
+              00000003 
+              00000004 
+              00000005 
+              00000006 
+              00000007 
+              00000008 
+              00000009 matrix  DCD              1,2,3,4,5,6,7,8,9
+    4 00000024         
+    5 00000024                 AREA             Matrix_Transpose, CODE
+    6 00000000                 EXPORT           __main
+    7 00000000                 ENTRY
+    8 00000000         __main  PROC
+    9 00000000         
+   10 00000000 4800            LDR              R0, =matrix
+   11 00000002         
+   12 00000002 E7FE    stop    B                stop
+   13 00000004                 ENDP
+   14 00000004         
+   15 00000004                 ALIGN
+   16 00000004                 END
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\U
+sers\Suangpi\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\Us
+ers\Suangpi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Dev
+ice\ST\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VER
+SION SETA 535" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+matrix 00000000
+
+Symbol: matrix
+   Definitions
+      At line 3 in file main.s
+   Uses
+      At line 10 in file main.s
+Comment: matrix used once
+myData 00000000
+
+Symbol: myData
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: myData unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Matrix_Transpose 00000000
+
+Symbol: Matrix_Transpose
+   Definitions
+      At line 5 in file main.s
+   Uses
+      None
+Comment: Matrix_Transpose unused
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 8 in file main.s
+   Uses
+      At line 6 in file main.s
+Comment: __main used once
+stop 00000002
+
+Symbol: stop
+   Definitions
+      At line 12 in file main.s
+   Uses
+      At line 12 in file main.s
+Comment: stop used once
+3 symbols
+342 symbols in table

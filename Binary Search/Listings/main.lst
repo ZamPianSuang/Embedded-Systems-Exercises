@@ -1,0 +1,145 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Implementing Binary Search
+    2 00000000         ; Note the input must be already sorted
+    3 00000000                 AREA             myData, DATA, READWRITE
+    4 00000000                 ALIGN
+    5 00000000 FFFFFFFD 
+              FFFFFFEE 
+              0000000B 
+              0000000C 
+              0000000E 
+              0000000F 
+              00000010 array   DCD              -3,-18,11,12,14,15,16
+    6 0000001C 00000007 
+                       size    DCD              7
+    7 00000020         
+    8 00000020                 AREA             myCode, CODE, READONLY
+    9 00000000                 EXPORT           __main
+   10 00000000                 ENTRY
+   11 00000000                 ALIGN
+   12 00000000         __main  PROC
+   13 00000000         
+   14 00000000 480C            LDR              R0, =array
+   15 00000002 F06F 0411       LDR              R4, =-18    ; R4 = target
+   16 00000006         
+   17 00000006 F04F 0100       MOV              R1, #0      ; R1 = left = 0
+   18 0000000A         
+   19 0000000A 4A0B            LDR              R2, =size
+   20 0000000C 6812            LDR              R2, [R2]
+   21 0000000E F1A2 0201       SUB              R2, R2, #1  ; R2 = right = size
+                                                             - 1
+   22 00000012         
+   23 00000012 4291    loop    CMP              R1, R2
+   24 00000014 DC0D            BGT              stop        ; if left > right
+   25 00000016 EB01 0302       ADD              R3, R1, R2  ; left + right
+   26 0000001A EA4F 0353       LSR              R3, R3, #1  ; R3 = middle = (le
+                                                            ft+right)/2
+   27 0000001E         
+   28 0000001E F850 5023       LDR              R5, [R0, R3, LSL #2] 
+                                                            ; middle value
+   29 00000022 42AC            CMP              R4, R5
+   30 00000024 BF08 461F 
+                       found   MOVEQ            R7, R3      ; found target
+   31 00000028 BFC8 1C59       ADDGT            R1, R3, #1  ; left = middle + 1
+                                                            
+   32 0000002C BFB8 1E5A       SUBLT            R2, R3, #1  ; right = middle - 
+                                                            1
+   33 00000030 E7EF            B                loop
+   34 00000032         
+   35 00000032 E7FE    stop    B                stop
+   36 00000034                 ENDP
+   37 00000034                 END
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\U
+sers\Suangpi\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -IC:\Us
+ers\Suangpi\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Dev
+ice\ST\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VER
+SION SETA 535" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+array 00000000
+
+Symbol: array
+   Definitions
+      At line 5 in file main.s
+   Uses
+      At line 14 in file main.s
+Comment: array used once
+myData 00000000
+
+Symbol: myData
+   Definitions
+      At line 3 in file main.s
+   Uses
+      None
+Comment: myData unused
+size 0000001C
+
+Symbol: size
+   Definitions
+      At line 6 in file main.s
+   Uses
+      At line 19 in file main.s
+Comment: size used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 12 in file main.s
+   Uses
+      At line 9 in file main.s
+Comment: __main used once
+found 00000024
+
+Symbol: found
+   Definitions
+      At line 30 in file main.s
+   Uses
+      None
+Comment: found unused
+loop 00000012
+
+Symbol: loop
+   Definitions
+      At line 23 in file main.s
+   Uses
+      At line 33 in file main.s
+Comment: loop used once
+myCode 00000000
+
+Symbol: myCode
+   Definitions
+      At line 8 in file main.s
+   Uses
+      None
+Comment: myCode unused
+stop 00000032
+
+Symbol: stop
+   Definitions
+      At line 35 in file main.s
+   Uses
+      At line 24 in file main.s
+      At line 35 in file main.s
+
+5 symbols
+345 symbols in table
